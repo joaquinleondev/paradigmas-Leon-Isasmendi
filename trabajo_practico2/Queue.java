@@ -22,10 +22,18 @@ public class Queue {
     }
 
     public Object take() {
-        int lastObjectPosition = queue.size() - 1;
-        Container lastObject = (Container) queue.get(lastObjectPosition);
-        queue.remove(lastObjectPosition);
-        return lastObject.getContent();
+        Object lastObject = lastObject();
+        removeLast();
+        return lastObject;
+    }
+
+    private void removeLast() {
+        queue.remove(queue.size() - 1);
+    }
+
+    private Object lastObject() {
+        Container aboutToBeRemoved = (Container) queue.get(queue.size() - 1);
+        return aboutToBeRemoved.getContent();
     }
 
     public int size() {
@@ -33,36 +41,7 @@ public class Queue {
     }
 
     public Object head() {
-        Container aboutToBeRemoved = (Container) queue.get(queue.size() - 1);
-        return aboutToBeRemoved.getContent();
-    }
-
-}
-
-class Container {
-    private final Object cargo;
-
-    public Container(String cargo) {
-        super();
-        this.cargo = cargo;
-    }
-
-    public Object getContent() {
-        return cargo;
-    }
-
-}
-
-class EmptyContainer extends Container {
-    private static final String cargo = "Empty";
-
-    public EmptyContainer() {
-        super(cargo);
-    }
-
-    @Override
-    public Object getContent() {
-        throw new Error("Queue is empty");
+        return lastObject();
     }
 
 }
