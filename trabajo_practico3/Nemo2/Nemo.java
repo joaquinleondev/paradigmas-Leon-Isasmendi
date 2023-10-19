@@ -1,15 +1,16 @@
 package Nemo2;
 
 public class Nemo {
-    CoordinatesSystem coordinatesSystem;
+    NavigationSystem navigationSystem;
+    Point point;
     ControlCenter controlCenter;
+    Orientation orientation;
 
     public Nemo() {
-        this.coordinatesSystem = new CoordinatesSystem();
-        this.controlCenter = new ControlCenter();
+        this.navigationSystem = new NavigationSystem();
+        this.point = new Point();
+        this.controlCenter = new ControlCenter(this);
+        this.orientation = new Orientation();
     }
 
-    public void execute(String command) {
-        this.controlCenter.executeCommand(command);
-    }
 }

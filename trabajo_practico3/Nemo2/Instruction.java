@@ -1,81 +1,59 @@
 package Nemo2;
 
-public abstract class Instruction {
-    private String content;
-    public Instruction(String command) {
-        this.content = command;
-    }
-    public abstract String getInstruction();
-}
-
-class Ascend extends Instruction{
-    private String content = "u";
-
-    public Ascend(String command) {
-        super(command);
+public class Instruction {
+    private String value;
+    private Runnable runnable;
+    public Instruction(String value) {
+        this.value = value;
     }
 
-    @Override public String getInstruction() {
-        return content;
+    public Runnable getRunnable() {
+        return runnable;
     }
 }
 
-class Descend extends Instruction{
-    private String content = "d";
+class ascend extends Instruction {
+    private String value = "u";
 
-    public Descend(String command) {
-        super(command);
+    public ascend(String value) {
+        super(value);
     }
 
-    @Override public String getInstruction() {
-        return content;
+    @Override
+    public Runnable getRunnable() {
+        return () -> {
+            System.out.println("ascend");
+        };
+    }
+
+}
+
+class descend extends Instruction {
+    public descend(String value) {
+        super(value);
     }
 }
 
-class Left extends Instruction{
-    private String content = "l";
-
-    public Left(String command) {
-        super(command);
-    }
-
-    @Override public String getInstruction() {
-        return content;
+class left extends Instruction {
+    public left(String value) {
+        super(value);
     }
 }
 
-class Right extends Instruction{
-    private String content = "r";
-
-    public Right(String command) {
-        super(command);
-    }
-
-    @Override public String getInstruction() {
-        return content;
+class right extends Instruction {
+    public right(String value) {
+        super(value);
     }
 }
 
-class Forward extends Instruction{
-    private String content = "f";
-
-    public Forward(String command) {
-        super(command);
-    }
-
-    @Override public String getInstruction() {
-        return content;
+class forward extends Instruction {
+    public forward(String value) {
+        super(value);
     }
 }
 
-class ThrowCapsule extends Instruction{
-    private String content = "m";
-
-    public ThrowCapsule(String command) {
-        super(command);
-    }
-
-    @Override public String getInstruction() {
-        return content;
+class throwCapsule extends Instruction {
+    public throwCapsule(String value) {
+        super(value);
     }
 }
