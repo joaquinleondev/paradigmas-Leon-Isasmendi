@@ -5,12 +5,14 @@ public class Nemo {
     Point point;
     ControlCenter controlCenter;
     Orientation orientation;
+    State state;
 
     public Nemo() {
-        this.navigationSystem = new NavigationSystem();
+        this.navigationSystem = new NavigationSystem(this);
         this.point = new Point();
         this.controlCenter = new ControlCenter(this);
         this.orientation = new Orientation();
+        this.state = new State();
     }
 
 }

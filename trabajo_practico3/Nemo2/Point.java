@@ -19,6 +19,10 @@ public class Point {
     public int[] position() {
         return new int[] {x, y, z};
     }
+
+    public void ascend() {
+        this.z += 1;
+    }
 }
 
 class PointSubmerged extends Point {

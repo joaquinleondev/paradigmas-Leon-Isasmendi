@@ -20,7 +20,7 @@ public class NemoTest {
 
     @Test public void test03CantAscendOnTop () {
         Nemo nemo = new Nemo();
-        nemo.navigationSystem.excecute("u");
+        nemo.navigationSystem.excecute("udd");
         Integer[] expected = {0, 0, 0};
     }
 //
