@@ -17,7 +17,7 @@ public class NavigationSystem {
         instructions.add(new forward());
         instructions.add(new throwCapsule());
     }
-    public void excecute(String command) {
+    public void execute(String command) {
         Arrays.stream(command.split("")).forEach(instruction -> {
             Instruction retorno = instructions.stream().filter(searchedInstruction -> searchedInstruction.returnValue().equals(instruction)).collect(Collectors.toCollection(ArrayList::new)).get(0);
             retorno.executeInstruction(nemo);

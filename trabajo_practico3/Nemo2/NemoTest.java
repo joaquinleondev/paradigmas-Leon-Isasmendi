@@ -20,31 +20,32 @@ public class NemoTest {
 
     @Test public void test03CantAscendOnTop () {
         Nemo nemo = new Nemo();
-        nemo.navigationSystem.excecute("udd");
-        Integer[] expected = {0, 0, 0};
+        nemo.navigationSystem.execute("u");
+        int[] expected = {0, 0, 0};
+        assertArrayEquals(expected, nemo.controlCenter.getPosition());
     }
-//
-//    @Test public void test04CanDescend () {
-//        Nemo nemo = new Nemo();
-//        nemo.executeCommand("dd");
-//        Integer[] expected = {0, 0, -2};
-//        assertArrayEquals(expected, nemo.getPosition());
-//    }
-//
-//    @Test public void test05CanAscend () {
-//        Nemo nemo = new Nemo();
-//        nemo.executeCommand("du");
-//        Integer[] expected = {0, 0, 0};
-//        assertArrayEquals(expected, nemo.getPosition());
-//    }
-//
+
+    @Test public void test04CanDescend () {
+        Nemo nemo = new Nemo();
+        nemo.navigationSystem.execute("dd");
+        int[] expected = {0, 0, -2};
+        assertArrayEquals(expected, nemo.controlCenter.getPosition());
+    }
+
+    @Test public void test05CanAscend () {
+        Nemo nemo = new Nemo();
+        nemo.navigationSystem.execute("du");
+        int[] expected = {0, 0, 0};
+        assertArrayEquals(expected, nemo.controlCenter.getPosition());
+    }
+
 //    @Test public void test06CanGoLeft () {
 //        Nemo nemo = new Nemo();
-//        nemo.executeCommand("lf");
-//        Integer[] expected = {0, 1, 0};
-//        assertArrayEquals(expected, nemo.getPosition());
+//        nemo.navigationSystem.execute("lf");
+//        int[] expected = {0, 1, 0};
+//        assertArrayEquals(expected, nemo.controlCenter.getPosition());
 //    }
-//
+
 //    @Test public void test07CanGoRight () {
 //        Nemo nemo = new Nemo();
 //        nemo.executeCommand("rf");
@@ -52,9 +53,9 @@ public class NemoTest {
 //        assertArrayEquals(expected, nemo.getPosition());
 //    }
 //
-//    @Test public void test08CantThrowCapsule () {
+//    @Test public void test08CanThrowCapsule () { esta ya esta en el 11 hay que mostrar que si se puede
 //        Nemo nemo = new Nemo();
-//        assertThrowsLike(() -> nemo.executeCommand("ddm"));
+//        assertThrowsLike(() -> nemo.navigationSystem.execute("ddm"));
 //    }
 //
 //    @Test public void test09InterpretsMessage () {
@@ -71,12 +72,12 @@ public class NemoTest {
 //        assertEquals(expected, nemo.getHeading());
 //    }
 //
-//    @Test public void test11CapsuleCantBeThrownFromDepth () {
-//        Nemo nemo = new Nemo();
-//        assertThrowsLike( () -> nemo.executeCommand("ddm"));
-//    }
-//
-//    private void assertThrowsLike( ThrowingRunnable e ) {
-//        assertEquals("Nemo is destroyed, capsule cant be thrown from this depth", assertThrows( RuntimeException.class, (ThrowingRunnable) e).getMessage() );
-//    }
+    @Test public void test11CapsuleCantBeThrownFromDepth () {
+        Nemo nemo = new Nemo();
+        assertThrowsLike(() -> nemo.navigationSystem.execute("ddm"));
+    }
+
+    private void assertThrowsLike( ThrowingRunnable e ) {
+        assertEquals("Nemo is destroyed, capsule cant be thrown from this depth", assertThrows( RuntimeException.class, (ThrowingRunnable) e).getMessage() );
+    }
 }

@@ -12,7 +12,8 @@ public class Nemo {
         this.point = new Point();
         this.controlCenter = new ControlCenter(this);
         this.orientation = new Orientation();
-        this.state = new State();
+        this.state = new State(this.point);
     }
+
 
 }
