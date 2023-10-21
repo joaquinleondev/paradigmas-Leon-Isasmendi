@@ -14,7 +14,7 @@ public class NemoTest {
 
     @Test public void test02StartsFacingNorth () {
         Nemo nemo = new Nemo();
-        int expected = 0;
+        int[] expected = {1, 0};
         assertEquals(expected, nemo.controlCenter.getHeading());
     }
 
@@ -53,11 +53,11 @@ public class NemoTest {
 //        assertArrayEquals(expected, nemo.getPosition());
 //    }
 //
-//    @Test public void test08CanThrowCapsule () { esta ya esta en el 11 hay que mostrar que si se puede
+//    @Test public void test08CanThrowCapsule () {
 //        Nemo nemo = new Nemo();
-//        assertThrowsLike(() -> nemo.navigationSystem.execute("ddm"));
+//        assertNotEquals();
 //    }
-//
+
 //    @Test public void test09InterpretsMessage () {
 //        Nemo nemo = new Nemo();
 //        nemo.executeCommand("flffrff");
