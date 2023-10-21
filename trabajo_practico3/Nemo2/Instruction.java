@@ -24,8 +24,7 @@ class ascend extends Instruction {
         return value;
     }
     public void executeInstruction(Nemo nemo) {
-        State[] profundidades = { new OnSurface(nemo.point), new SafeDepth(nemo.point), new DangerousDepth(nemo.point) };
-        profundidades[Math.min(nemo.point.depth()*-1, 2)].ascend();
+        nemo.point.getActualState().ascend();
     }
 
 }
@@ -40,7 +39,7 @@ class descend extends Instruction {
         return value;
     }
     public void executeInstruction(Nemo nemo) {
-     nemo.point.z -= 1;
+     nemo.point.getActualState().descend();
     }
 }
 
@@ -87,7 +86,6 @@ class throwCapsule extends Instruction {
         return value;
     }
     public void executeInstruction(Nemo nemo) {
-        State[] profundidades = { new OnSurface(nemo.point), new SafeDepth(nemo.point), new DangerousDepth(nemo.point) };
-        profundidades[Math.min(nemo.point.depth(), 2)*-1].throwCapsule();
+        nemo.point.getActualState().throwCapsule();
     }
 }

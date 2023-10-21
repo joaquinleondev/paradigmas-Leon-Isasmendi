@@ -8,7 +8,7 @@ public class ControlCenter {
     public int[] getPosition() {
         return nemo.point.position();
     }
-    public int getHeading() {
+    public int[] getHeading() {
         return nemo.orientation.heading();
     }
 }
