@@ -1,64 +1,55 @@
 package Nemo;
 
-abstract class State {
-    public Point point;
-
-    public State getActualState() {
-        return this.point.depths.get(lastDepthIndex());
+public class State {
+    public int ascend() {
+        return 1;
     }
 
-    public State() {
+    public Runnable ascendF(ControlCenter controlCenter) {
+        return controlCenter::removeState;
     }
 
-    public void ascend() {
-        this.point.depths.remove(lastDepthIndex());
-        this.point.z += 1;
+    public int descend() {
+        return -1;
     }
 
-    public void descend() {
-        this.point.depths.add(new DangerousDepth(point));
-        this.point.z -= 1;
+    public Runnable descendF(ControlCenter controlCenter) {
+        return () -> {
+            controlCenter.addState(new Submerged());
+        };
     }
 
     public void throwCapsule() {
         System.out.println("Capsule thrown");
     }
-
-    private int lastDepthIndex() {
-        return this.point.depths.size() - 1;
-    }
 }
 
 class OnSurface extends State {
-    public OnSurface() {
-        super(point);
-    }
     @Override
-    public void ascend() {
+    public int ascend() {
+        return 0;
     }
 
     @Override
-    public void descend(Point point) {
-        point.depths.add(new SafeDepth(point));
-        point.z -= 1;
+    public Runnable ascendF(ControlCenter controlCenter) {
+        return () -> {};
     }
-
+    @Override
+    public Runnable descendF(ControlCenter controlCenter) {
+        return () -> {
+            controlCenter.addState(new SafeDepth());
+        };
+    }
 }
 
 class SafeDepth extends State {
-    public SafeDepth(Point point) {
-        super(point);
-    }
+
 }
 
-class DangerousDepth extends State {
-    public DangerousDepth(Point point) {
-        super(point);
-    }
 
+class Submerged extends State {
     @Override
     public void throwCapsule() {
         throw new RuntimeException("Nemo is destroyed, capsule cant be thrown from this depth");
     }
-
 }

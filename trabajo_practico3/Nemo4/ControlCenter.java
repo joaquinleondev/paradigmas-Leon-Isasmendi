@@ -6,6 +6,7 @@ import java.util.Arrays;
 public class ControlCenter {
     private final ArrayList<Instruction> instructions = new ArrayList<>();
     private final ArrayList<State> depthRegistry = new ArrayList<>();
+    private final Orientation curerentOrientation = new Orientation();
 
     public ControlCenter() {
         depthRegistry.add(new OnSurface());
@@ -21,7 +22,7 @@ public class ControlCenter {
         return point.value();
     }
 
-    public int getHeading(Orientation orientation) {
+    public int[] getHeading(Orientation orientation) {
         return orientation.value();
     }
 
@@ -32,4 +33,15 @@ public class ControlCenter {
         });
     }
 
+    public State getCurrentState(Nemo nemo) {
+        return depthRegistry.get(depthRegistry.size() - 1);
+    }
+
+    public void addState(State state) {
+        depthRegistry.add(state);
+    }
+
+    public void removeState() {
+        depthRegistry.remove(depthRegistry.size() - 1);
+    }
 }
