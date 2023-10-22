@@ -6,9 +6,9 @@ public class Nemo {
     private Orientation orientation;
 
     public Nemo() {
-        this.controlCenter = new ControlCenter();
         this.point = new Point(0, 0, 0);
         this.orientation = new Orientation();
+        this.controlCenter = new ControlCenter(this.point, this.orientation);
     }
 
     public int[] position() {
@@ -16,42 +16,11 @@ public class Nemo {
     }
 
     public int[] heading() {
-        return controlCenter.getHeading(orientation);
+        return controlCenter.orientation.value();
     }
 
     public void execute(String command) {
         controlCenter.run(command, this);
     }
 
-    public void ascend() {
-        State currentState = controlCenter.getCurrentState();
-        int changeOfUnits = currentState.unitsToAscend();
-        point.updateDepth(changeOfUnits);
-        currentState.getAfterAscendRunnable(controlCenter).run();
-    }
-
-    public void descend() {
-        State currentState = controlCenter.getCurrentState();
-        int changeOfUnits = currentState.unitsToDescend();
-        point.updateDepth(changeOfUnits);
-        currentState.getAfterDescendRunnable(controlCenter).run();
-    }
-
-    public void rotateLeft() {
-        orientation = orientation.left();
-    }
-
-    public void rotateRight() {
-        orientation = orientation.right();
-    }
-
-    public void moveForward() {
-        int[] toMove = controlCenter.getHeading(orientation);
-        point.updatePosition(toMove);
-    }
-
-    public void throwCapsule() {
-        State currentState = controlCenter.getCurrentState();
-        currentState.throwCapsule();
-    }
 }

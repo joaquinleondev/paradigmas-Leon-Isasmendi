@@ -3,7 +3,7 @@ package nemo;
 public interface Instruction {
     String getCommand();
 
-    void execute(Nemo nemo);
+    void execute(ControlCenter controlCenter);
 }
 
 class Ascend implements Instruction {
@@ -15,8 +15,11 @@ class Ascend implements Instruction {
     }
 
     @Override
-    public void execute(Nemo nemo) {
-        nemo.ascend();
+    public void execute(ControlCenter controlCenter) {
+        State currentState = controlCenter.getCurrentState();
+        int changeOfUnits = currentState.unitsToAscend();
+        controlCenter.point.updateDepth(changeOfUnits);
+        currentState.getAfterAscendRunnable(controlCenter).run();
     }
 }
 
@@ -29,8 +32,11 @@ class Descend implements Instruction {
     }
 
     @Override
-    public void execute(Nemo nemo) {
-        nemo.descend();
+    public void execute(ControlCenter controlCenter) {
+        State currentState = controlCenter.getCurrentState();
+        int changeOfUnits = currentState.unitsToDescend();
+        controlCenter.point.updateDepth(changeOfUnits);
+        currentState.getAfterDescendRunnable(controlCenter).run();;
     }
 }
 
@@ -43,8 +49,8 @@ class Left implements Instruction {
     }
 
     @Override
-    public void execute(Nemo nemo) {
-        nemo.rotateLeft();
+    public void execute(ControlCenter controlCenter) {
+        controlCenter.orientation = controlCenter.orientation.left();
     }
 }
 
@@ -57,8 +63,8 @@ class Right implements Instruction {
     }
 
     @Override
-    public void execute(Nemo nemo) {
-        nemo.rotateRight();
+    public void execute(ControlCenter controlCenter) {
+        controlCenter.orientation = controlCenter.orientation.right();
     }
 }
 
@@ -71,8 +77,9 @@ class Forward implements Instruction {
     }
 
     @Override
-    public void execute(Nemo nemo) {
-        nemo.moveForward();
+    public void execute(ControlCenter controlCenter) {
+        int[] toMove = controlCenter.orientation.value();
+        controlCenter.point.updatePosition(toMove);
     }
 }
 
@@ -85,7 +92,8 @@ class ThrowCapsule implements Instruction {
     }
 
     @Override
-    public void execute(Nemo nemo) {
-        nemo.throwCapsule();
+    public void execute(ControlCenter controlCenter) {
+        State currentState = controlCenter.getCurrentState();
+        currentState.throwCapsule();
     }
 }

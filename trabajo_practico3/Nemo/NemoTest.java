@@ -102,10 +102,17 @@ public class NemoTest {
         int[] expected = {3, 2, 0};
         assertArrayEquals( expected, nemo.position());
     }
+    @Test
+    public void test15NemoInterpretsConnectivesMessages(){
+        nemo.execute("fd");
+        nemo.execute("frf");
+        int[] expected = {2, -1, -1};
+        assertArrayEquals( expected, nemo.position());
+    }
 
 
     @Test
-    public void test15NemoDoesntInterpretInvalidMessage() {
+    public void test16NemoDoesntInterpretInvalidMessage() {
         assertThrowsLike(INVALID_COMMAND_ERROR,() -> nemo.execute("z"));
     }
 
