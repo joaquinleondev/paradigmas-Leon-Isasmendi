@@ -2,91 +2,115 @@ package nemo;
 
 import org.junit.Test;
 import org.junit.function.ThrowingRunnable;
-
-import static org.junit.Assert.*;
+import org.junit.Before;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
 
 public class NemoTest {
+    public static final String INVALID_COMMAND_ERROR = "Invalid command";
+    public static final String CAPSULE_CANT_BE_THROWN_ERROR = "Nemo is destroyed, capsule cant be thrown from this depth";
+    private Nemo nemo;
+
+    @Before
+    public void setUp() {
+        nemo = new Nemo();
+    }
+
     @Test
-    public void testNemoStartsAtOrigin() {
-        Nemo nemo = new Nemo();
+    public void test01NemoStartsAtOrigin() {
         int[] expected = {0, 0, 0};
-        assertArrayEquals("Nemo starts at the origin", expected, nemo.position());
+        assertArrayEquals( expected, nemo.position());
     }
 
     @Test
-    public void testNemoStartsFacingEast() {
-        Nemo nemo = new Nemo();
+    public void test02NemoStartsFacingEast() {
         int[] expected = {1, 0};
-        assertArrayEquals("Nemo starts facing east", expected, nemo.heading());
+        assertArrayEquals( expected, nemo.heading());
     }
 
     @Test
-    public void testNemoCannotAscendOnTop() {
-        Nemo nemo = new Nemo();
+    public void test03NemoCannotAscendOnTop() {
         nemo.execute("u");
         int[] expected = {0, 0, 0};
-        assertArrayEquals("Nemo cannot ascend on top", expected, nemo.position());
+        assertArrayEquals( expected, nemo.position());
     }
-
     @Test
-    public void testNemoCanDescend() {
-        Nemo nemo = new Nemo();
-        nemo.execute("ddduuuuuu");
-        int[] expected = {0, 0, 0};
-        assertArrayEquals("Nemo can descend", expected, nemo.position());
-    }
-
-    @Test
-    public void testNemoCanAscend() {
-        Nemo nemo = new Nemo();
+    public void test04NemoCanAscend() {
         nemo.execute("du");
         int[] expected = {0, 0, 0};
-        assertArrayEquals("Nemo can ascend", expected, nemo.position());
+        assertArrayEquals( expected, nemo.position());
     }
-
     @Test
-    public void testNemoCanGoLeft() {
-        Nemo nemo = new Nemo();
-        nemo.execute("l");
+    public void test05NemoCanDescend() {
+        nemo.execute("ddd");
+        int[] expected = {0, 0, -3};
+        assertArrayEquals( expected, nemo.position());
     }
-
     @Test
-    public void testNemoCanGoRight() {
-        Nemo nemo = new Nemo();
-        nemo.execute("rf");
-        int[] expected = {0, -1, 0};
-        assertArrayEquals("Nemo can go right", expected, nemo.position());
-    }
-
-    @Test
-    public void testNemoCanThrowCapsule() {
-        Nemo nemo = new Nemo();
-        nemo.execute("dm");
-    }
-
-    @Test
-    public void testNemoInterpretsMessage() {
-        Nemo nemo = new Nemo();
-        nemo.execute("flffrff");
-        int[] expected = {3, 2, 0};
-        assertArrayEquals("Nemo can interpret a message", expected, nemo.position());
-    }
-
-    @Test
-    public void testNemoHeadingIn360Module() {
-        Nemo nemo = new Nemo();
+    public void test06NemoCanTurnLeft() {
         nemo.execute("l");
         int[] expected = {0, 1};
-        assertArrayEquals("Nemo heading is within a 360-degree module", expected, nemo.heading());
+        assertArrayEquals( expected, nemo.heading());
+    }
+    @Test
+    public void test07NemoCanTurnRight() {
+        nemo.execute("r");
+        int[] expected = {0, -1};
+        assertArrayEquals( expected, nemo.heading());
+    }
+    @Test
+    public void test08NemoCanGoForward() {
+        nemo.execute("f");
+        int[] expected = {1, 0, 0};
+        assertArrayEquals( expected, nemo.position());
     }
 
     @Test
-    public void testNemoCapsuleCantBeThrownFromDepth() {
-        Nemo nemo = new Nemo();
-        assertThrowsLike(() -> nemo.execute("dddm"));
+    public void test09NemoCanGoLeft() {
+        nemo.execute("lf");
+        int[] expected = {0, 1, 0};
+        assertArrayEquals( expected, nemo.position());
     }
 
-    private void assertThrowsLike(ThrowingRunnable e) {
-        assertEquals("Nemo is destroyed, capsule cant be thrown from this depth", assertThrows(RuntimeException.class, e).getMessage());
+    @Test
+    public void test10NemoCanGoRight() {
+        nemo.execute("rf");
+        int[] expected = {0, -1, 0};
+        assertArrayEquals( expected, nemo.position());
+    }
+    @Test
+    public void test11NemoCanDoA360Rotation() {
+        nemo.execute("llll");
+        int[] expected = {1, 0};
+        assertArrayEquals( expected, nemo.heading());
+    }
+
+    @Test
+    public void test12NemoCanThrowCapsule() {
+        nemo.execute("dm");
+        // There is no way to test this, but it should not throw an exception
+    }
+    @Test
+    public void test13NemoCapsuleCantBeThrownFromDepth() {
+        assertThrowsLike(CAPSULE_CANT_BE_THROWN_ERROR,() -> nemo.execute("dddm"));
+    }
+
+    @Test
+    public void test14NemoInterpretsMessage() {
+        nemo.execute("flffrff");
+        int[] expected = {3, 2, 0};
+        assertArrayEquals( expected, nemo.position());
+    }
+
+
+    @Test
+    public void test15NemoDoesntInterpretInvalidMessage() {
+        assertThrowsLike(INVALID_COMMAND_ERROR,() -> nemo.execute("z"));
+    }
+
+
+    private void assertThrowsLike(String message,ThrowingRunnable e) {
+        assertEquals(message, assertThrows(RuntimeException.class, e).getMessage());
     }
 }

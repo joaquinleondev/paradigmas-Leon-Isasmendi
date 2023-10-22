@@ -27,8 +27,12 @@ public class ControlCenter {
 
     public void run(String command, Nemo nemo) {
         Arrays.stream(command.split("")).forEach((String instruction) -> {
+            try{
             Instruction instructionToExecute = instructions.stream().filter((Instruction searchedInstruction) -> searchedInstruction.getCommand().equals(instruction)).toList().get(0);
-            instructionToExecute.execute(nemo);
+            instructionToExecute.execute(nemo);}
+            catch(Exception e){
+                throw new RuntimeException("Invalid command");
+            }
         });
     }
 
