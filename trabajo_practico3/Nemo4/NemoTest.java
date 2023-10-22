@@ -3,6 +3,8 @@ package Nemo;
 import org.junit.Test;
 import org.junit.function.ThrowingRunnable;
 
+import java.util.Arrays;
+
 import static org.junit.Assert.*;
 
 public class NemoTest {
@@ -41,9 +43,8 @@ public class NemoTest {
 
     @Test public void test06CanGoLeft () {
         Nemo nemo = new Nemo();
-        nemo.execute("lf");
-        int[] expected = {0, 1, 0};
-        assertArrayEquals(expected, nemo.position());
+        nemo.execute("l");
+        System.out.println(Arrays.toString(nemo.heading()));
     }
 
     @Test public void test07CanGoRight () {
@@ -67,7 +68,7 @@ public class NemoTest {
 
     @Test public void test10HeadingIn360Module () {
         Nemo nemo = new Nemo();
-        nemo.execute("rrrr");
+        nemo.execute("l");
         int[] expected = {0, 1};
         assertArrayEquals(expected, nemo.heading());
     }

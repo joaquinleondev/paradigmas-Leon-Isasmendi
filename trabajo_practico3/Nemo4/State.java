@@ -1,15 +1,15 @@
 package Nemo;
 
 public class State {
-    public int ascend() {
+    public int unitsToAscend() {
         return 1;
     }
 
-    public Runnable ascendF(ControlCenter controlCenter) {
+    public Runnable getAfterAscendRunnable(ControlCenter controlCenter) {
         return controlCenter::removeState;
     }
 
-    public int descend() {
+    public int unitsToDescend() {
         return -1;
     }
 
@@ -26,12 +26,12 @@ public class State {
 
 class OnSurface extends State {
     @Override
-    public int ascend() {
+    public int unitsToAscend() {
         return 0;
     }
 
     @Override
-    public Runnable ascendF(ControlCenter controlCenter) {
+    public Runnable getAfterAscendRunnable(ControlCenter controlCenter) {
         return () -> {};
     }
     @Override

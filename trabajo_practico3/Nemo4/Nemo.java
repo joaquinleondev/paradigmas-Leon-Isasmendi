@@ -1,53 +1,56 @@
 package Nemo;
 
+import java.util.Arrays;
+
 public class Nemo {
     private final ControlCenter controlCenter;
     private final Point point;
-    private final Orientation orientation;
+    private Orientation orientation;
 
     public Nemo() {
         this.controlCenter = new ControlCenter();
         this.point = new Point(0, 0, 0);
-        this.orientation = new East();
+        this.orientation = new Orientation();
     }
 
     public int[] position() {
-        return this.controlCenter.getCoordinates(this.point);
+        return controlCenter.getCoordinates(point);
     }
 
     public int[] heading() {
-        return this.controlCenter.getHeading(this.orientation);
+        return controlCenter.getHeading(orientation);
     }
 
     public void execute(String command) {
-        this.controlCenter.run(command, this);
+        controlCenter.run(command, this);
     }
 
     public void ascend() {
         State currentState = controlCenter.getCurrentState(this);
-        int change = currentState.ascend();
-        this.point.updateDepth(change);
-        currentState.ascendF(controlCenter).run();
+        int changeOfUnits = currentState.unitsToAscend();
+        point.updateDepth(changeOfUnits);
+        currentState.getAfterAscendRunnable(controlCenter).run();
     }
 
     public void descend() {
         State currentState = controlCenter.getCurrentState(this);
-        int change = currentState.descend();
-        this.point.updateDepth(change);
+        int changeOfUnits = currentState.unitsToDescend();
+        point.updateDepth(changeOfUnits);
         currentState.descendF(controlCenter).run();
     }
 
     public void rotateLeft() {
-        this.orientation.left();
+        orientation = orientation.left();
+        System.out.println(Arrays.toString(orientation.value()));
     }
 
     public void rotateRight() {
-        this.orientation.right();
+        orientation = orientation.right();
     }
 
     public void moveForward() {
-        int[] toMove = controlCenter.getHeading(this.orientation);
-        this.point.updatePosition(toMove);
+        int[] toMove = controlCenter.getHeading(orientation);
+        point.updatePosition(toMove);
     }
 
     public void throwCapsule() {
