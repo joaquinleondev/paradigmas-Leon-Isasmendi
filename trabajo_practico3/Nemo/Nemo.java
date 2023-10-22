@@ -1,75 +1,57 @@
-package Nemo;
-
-
-import java.util.Arrays;
+package nemo;
 
 public class Nemo {
-    Integer[] position = {0, 0, 0};
-    Integer heading = 0;
-    Boolean canTrowCapsule = true;
+    private final ControlCenter controlCenter;
+    private final Point point;
+    private Orientation orientation;
 
-    public Integer[] getPosition () {
-        return this.position;
+    public Nemo() {
+        this.controlCenter = new ControlCenter();
+        this.point = new Point(0, 0, 0);
+        this.orientation = new Orientation();
     }
 
-    public Integer getHeading () {
-        return this.heading;
+    public int[] position() {
+        return controlCenter.getCoordinates(point);
     }
 
-    private void ascend () {
-        if (!(this.position[2] == 0)) {
-            this.position[2] += 1;
-        }
+    public int[] heading() {
+        return controlCenter.getHeading(orientation);
     }
 
-    private void descend () {
-        this.position[2] -= 1;
+    public void execute(String command) {
+        controlCenter.run(command, this);
     }
 
-    private void left () {
-        if (this.heading == 270) {
-            this.heading = 0;
-        } else {
-            this.heading += 90;
-        }
+    public void ascend() {
+        State currentState = controlCenter.getCurrentState();
+        int changeOfUnits = currentState.unitsToAscend();
+        point.updateDepth(changeOfUnits);
+        currentState.getAfterAscendRunnable(controlCenter).run();
     }
 
-    private void right () {
-        if (this.heading == 0) {
-            this.heading = 270;
-        } else {
-            this.heading -= 90;
-        }
+    public void descend() {
+        State currentState = controlCenter.getCurrentState();
+        int changeOfUnits = currentState.unitsToDescend();
+        point.updateDepth(changeOfUnits);
+        currentState.getAfterDescendRunnable(controlCenter).run();
     }
 
-    private void moveForward () {
-        if (this.heading == 0) {
-            this.position[0] += 1;
-        } else if (this.heading == 90) {
-            this.position[1] += 1;
-        } else if (this.heading == 180) {
-            this.position[0] -= 1;
-        } else if (this.heading == 270) {
-            this.position[1] -= 1;
-        }
+    public void rotateLeft() {
+        orientation = orientation.left();
     }
 
-    private void throwCapsule () throws RuntimeException {
-        if (this.position[2] < -1) {
-            throw new RuntimeException("Nemo is destroyed, capsule cant be thrown from this depth");
-        }
+    public void rotateRight() {
+        orientation = orientation.right();
     }
 
-    public void executeCommand (String command) {
-        Arrays.stream(command.split("")).forEach((instruction) -> {
-            switch (instruction) {
-                case "u" -> this.ascend();
-                case "d" -> this.descend();
-                case "l" -> this.left();
-                case "r" -> this.right();
-                case "f" -> this.moveForward();
-                case "m" -> this.throwCapsule();
-            }
-        });
+    public void moveForward() {
+        int[] toMove = controlCenter.getHeading(orientation);
+        point.updatePosition(toMove);
+    }
+
+    public void throwCapsule() {
+        State currentState = controlCenter.getCurrentState();
+        currentState.throwCapsule();
     }
 }

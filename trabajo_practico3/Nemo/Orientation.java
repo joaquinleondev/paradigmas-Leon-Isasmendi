@@ -1,4 +1,4 @@
-package Nemo;
+package nemo;
 
 public class Orientation {
     private final int[] value;
@@ -21,7 +21,7 @@ public class Orientation {
 }
 
 class North extends Orientation {
-    int[] value = new int[]{0, 1};
+    final int[] value;
 
     public North() {
         this.value = new int[]{0, 1};
@@ -44,7 +44,7 @@ class North extends Orientation {
 }
 
 class West extends Orientation {
-    int[] value;
+    final int[] value;
 
     public West() {
         this.value = new int[]{-1, 0};
@@ -67,21 +67,10 @@ class West extends Orientation {
 }
 
 class East extends Orientation {
-    int[] value;
+    final int[] value;
 
     public East() {
         this.value = new int[]{1, 0};
-    }
-
-
-    @Override
-    public Orientation left() {
-        return new North();
-    }
-
-    @Override
-    public Orientation right() {
-        return new South();
     }
 
     @Override
@@ -91,7 +80,7 @@ class East extends Orientation {
 }
 
 class South extends Orientation {
-    int[] value;
+    final int[] value;
 
     public South() {
         this.value = new int[]{0, -1};

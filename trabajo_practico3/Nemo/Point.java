@@ -1,4 +1,4 @@
-package Nemo;
+package nemo;
 
 public class Point {
     private int x;
@@ -10,10 +10,6 @@ public class Point {
         this.x = x;
         this.y = y;
         this.z = z;
-    }
-
-    public int depth() {
-        return this.z;
     }
 
     public int[] value() {

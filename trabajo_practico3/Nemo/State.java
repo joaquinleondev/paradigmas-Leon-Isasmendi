@@ -1,4 +1,4 @@
-package Nemo;
+package nemo;
 
 public class State {
     public int unitsToAscend() {
@@ -13,10 +13,8 @@ public class State {
         return -1;
     }
 
-    public Runnable descendF(ControlCenter controlCenter) {
-        return () -> {
-            controlCenter.addState(new Submerged());
-        };
+    public Runnable getAfterDescendRunnable(ControlCenter controlCenter) {
+        return () -> controlCenter.addState(new Submerged());
     }
 
     public void throwCapsule() {
@@ -32,20 +30,18 @@ class OnSurface extends State {
 
     @Override
     public Runnable getAfterAscendRunnable(ControlCenter controlCenter) {
-        return () -> {};
-    }
-    @Override
-    public Runnable descendF(ControlCenter controlCenter) {
         return () -> {
-            controlCenter.addState(new SafeDepth());
         };
+    }
+
+    @Override
+    public Runnable getAfterDescendRunnable(ControlCenter controlCenter) {
+        return () -> controlCenter.addState(new SafeDepth());
     }
 }
 
 class SafeDepth extends State {
-
 }
-
 
 class Submerged extends State {
     @Override
