@@ -1,25 +1,25 @@
 package linea;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class Linea {
     private int base;
     private int height;
     private GameMode gameType;
-    private ArrayList<ArrayList> gameTable;
-    private ArrayList<Turns> turns = new ArrayList<>();
+    private final ArrayList<ArrayList<String>> gameTable = new ArrayList<>();
+    private final ArrayList<Turns> turns = new ArrayList<>();
+    private final Checker checker = new Checker();
 
     public Linea(int base, int height, char gameType) {
         this.base = base;
         this.height = height;
         this.gameType = new GameMode(gameType);
-        this.gameTable = new ArrayList<>();
         for (int i = 0; i < base; i++) {
             ArrayList<String> row = new ArrayList<>();
             this.gameTable.add(row);
         }
         this.turns.add(new Red());
+        this.gameType = GameMode.createGameMode(gameType);
     }
 
     public String show() {
@@ -31,7 +31,7 @@ public class Linea {
             numberOfColumns.append(" ");
         }
         numberOfColumns.append("|");
-        for (int i = this.height-1; i >= 0; i--) {
+        for (int i = this.height - 1; i >= 0; i--) {
             StringBuilder row = new StringBuilder();
             row.append("| ");
             for (int j = 0; j < this.base; j++) {
@@ -51,11 +51,11 @@ public class Linea {
     }
 
     public boolean finished() {
-        return this.height*this.base == this.turns.size()-1;
+        return this.checker.check(this.gameTable, this.gameType);
     }
 
     public void playRedAt(int position) {
-        if (!new Red().equals(actualTurn())) {
+        if (new Red().equals(actualTurn())) {
             throw new RuntimeException("A player can't play twice in a row");
         }
         actualTurnPlaysAt(position);
@@ -63,7 +63,7 @@ public class Linea {
     }
 
     public void playBlueAt(int position) {
-        if (!new Blue().equals(actualTurn())) {
+        if (new Blue().equals(actualTurn())) {
             throw new RuntimeException("A player can't play twice in a row");
         }
         checkPosition(position);
