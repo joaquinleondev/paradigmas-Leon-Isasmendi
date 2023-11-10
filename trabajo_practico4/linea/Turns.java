@@ -12,6 +12,9 @@ public abstract class Turns {
     public Turns next() {
         return null;
     }
+    public char getValue() {
+        return value;
+    }
 
     public boolean equals(Turns other) {
         return this.value != other.value;

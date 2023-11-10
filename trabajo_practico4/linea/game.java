@@ -5,12 +5,12 @@ public class Game {
 
         System.out.println("Dimensiones?");
 
-        Linea game = new Linea(prompt("Base? "), prompt("Altura? "), 'A');
+        Linea game = new Linea(prompt("Base? "), prompt("Altura? "), 'C');
         System.out.println(game.show());
 
 
         while (!game.finished()) {
-
+            System.out.println(game.gameTable.getDiagonals(2,2));
             game.playRedAt(prompt("Rojas? "));
 
             System.out.println(game.show());

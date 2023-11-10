@@ -2,7 +2,6 @@ package linea;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 public class GameMode {
@@ -21,45 +20,50 @@ public class GameMode {
         return this.gameType;
     }
 
-    public boolean isFinished(ArrayList<ArrayList<String>> gameTable) {
-        return false;
+
+
+    public ArrayList<ArrayList<Character>> getPosibleWins(GameTable gameTable, int x, int y){
+    ArrayList<ArrayList<Character>> result = new ArrayList<>();
+        return result;
     }
 }
-
 class typeA extends GameMode {
     public typeA() {
         super('A');
     }
-
     @Override
-    public boolean isFinished(ArrayList<ArrayList<String>> gameTable) {
-        AtomicBoolean isFinished = new AtomicBoolean(false);
-        gameTable.forEach(column -> {
-            if (column.size() < 4) {
-                return;
-            }
-            for (int i = 0; i < column.size() - 3; i++) {
-                String toCheck = column.get(i);
-                for (int j = 1; j < 4; j++) {
-                    if (!toCheck.equals(column.get(i + j))) {
-                        break;
-                    }
-                    isFinished.set(true);
-                }
-            }
-        });
-        return isFinished.get();
+    public ArrayList<ArrayList<Character>> getPosibleWins(GameTable gameTable, int x, int y){
+        ArrayList<ArrayList<Character>> result = new ArrayList<>();
+        result.addAll(gameTable.getFullSlots());
+        result.addAll(gameTable.getTransposeMatrix());
+        return result;
     }
+
+
 }
 
 class typeB extends GameMode {
     public typeB() {
         super('B');
     }
+    @Override
+    public ArrayList<ArrayList<Character>> getPosibleWins(GameTable gameTable, int x, int y){
+        ArrayList<ArrayList<Character>> result = new ArrayList<>();
+        result.addAll(gameTable.getDiagonals(x,y));
+        return result;
+    }
 }
 
 class typeC extends GameMode {
     public typeC() {
         super('C');
+    }
+    @Override
+    public ArrayList<ArrayList<Character>> getPosibleWins(GameTable gameTable, int x, int y){
+        ArrayList<ArrayList<Character>> result = new ArrayList<>();
+        result.addAll(gameTable.getDiagonals(x,y));
+        result.addAll(gameTable.getTransposeMatrix());
+        result.addAll(gameTable.getFullSlots());
+        return result;
     }
 }
