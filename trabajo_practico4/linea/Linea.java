@@ -1,13 +1,14 @@
 package linea;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Linea {
     private int base;
     private int height;
     private GameMode gameType;
     private ArrayList<ArrayList> gameTable;
-    private ArrayList<Turns> turns;
+    private ArrayList<Turns> turns = new ArrayList<>();
 
     public Linea(int base, int height, char gameType) {
         this.base = base;
@@ -18,38 +19,74 @@ public class Linea {
             ArrayList<String> row = new ArrayList<>();
             this.gameTable.add(row);
         }
-        this.turns = new ArrayList<>();
         this.turns.add(new Red());
     }
 
     public String show() {
         ArrayList<String> result = new ArrayList<>();
-        for (int i = this.height; i > 0; i--) {
+        StringBuilder numberOfColumns = new StringBuilder();
+        numberOfColumns.append("| ");
+        for (int i = 0; i < this.base; i++) {
+            numberOfColumns.append(i + 1);
+            numberOfColumns.append(" ");
+        }
+        numberOfColumns.append("|");
+        for (int i = this.height-1; i >= 0; i--) {
             StringBuilder row = new StringBuilder();
+            row.append("| ");
             for (int j = 0; j < this.base; j++) {
                 try {
                     row.append(this.gameTable.get(j).get(i));
                 } catch (Exception e) {
                     row.append("-");
-                } finally {
-                    row.append(" ");
                 }
+                row.append(" ");
             }
+            row.append("|");
             result.add(row.toString());
         }
+        result.add(numberOfColumns.toString());
         return String.join("\n", result);
+
     }
 
-    public void finished() {
-
+    public boolean finished() {
+        return this.height*this.base == this.turns.size()-1;
     }
 
     public void playRedAt(int position) {
-        this.turns.add(new Red());
-        this.gameTable.get(position).add("R");
+        if (!new Red().equals(actualTurn())) {
+            throw new RuntimeException("A player can't play twice in a row");
+        }
+        actualTurnPlaysAt(position);
+
     }
 
     public void playBlueAt(int position) {
+        if (!new Blue().equals(actualTurn())) {
+            throw new RuntimeException("A player can't play twice in a row");
+        }
+        checkPosition(position);
+        actualTurnPlaysAt(position);
 
     }
+
+    private void actualTurnPlaysAt(int position) {
+        checkPosition(position);
+        actualTurn().playAt(position, this.gameTable, this.turns);
+    }
+
+    private void checkPosition(int position) {
+        if (position < 1 || position > this.base) {
+            throw new RuntimeException("Position out of bounds");
+        }
+        if (this.gameTable.get(position - 1).size() == this.height) {
+            throw new RuntimeException("Column is full");
+        }
+    }
+
+    private Turns actualTurn() {
+        return this.turns.get(this.turns.size() - 1);
+    }
 }
+
