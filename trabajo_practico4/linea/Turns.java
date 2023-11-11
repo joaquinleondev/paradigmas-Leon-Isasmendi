@@ -1,51 +1,61 @@
 package linea;
 
-import java.util.ArrayList;
+import java.util.Objects;
 
 public abstract class Turns {
-    private final char value;
+    private final String value;
 
-    public Turns(char value) {
+    public Turns(String value) {
         this.value = value;
     }
 
     public Turns next() {
         return null;
     }
-    public char getValue() {
+
+    public String getValue() {
         return value;
     }
 
     public boolean equals(Turns other) {
-        return this.value != other.value;
+        return !Objects.equals(this.value, other.value);
     }
 
-    public void playAt(int position, ArrayList<ArrayList<String>> gameTable, ArrayList<Turns> turns) {
-        gameTable.get(position - 1).add(String.valueOf(this.value));
-        turns.add(this.next());
+    public Cell returnCell(int[] coords) {
+        return null;
     }
 
 }
 
 class Blue extends Turns {
     public Blue() {
-        super('B');
+        super("B");
     }
 
     @Override
     public Turns next() {
         return new Red();
     }
+
+    @Override
+    public Cell returnCell(int[] coords) {
+        return new BlueCell(coords[0], coords[1]);
+    }
 }
 
 class Red extends Turns {
     public Red() {
-        super('R');
+        super("R");
     }
 
     @Override
     public Turns next() {
         return new Blue();
+    }
+
+    @Override
+    public Cell returnCell(int[] coords) {
+        return new RedCell(coords[0], coords[1]);
     }
 }
 

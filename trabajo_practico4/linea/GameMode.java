@@ -1,7 +1,9 @@
 package linea;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class GameMode {
@@ -20,23 +22,18 @@ public class GameMode {
         return this.gameType;
     }
 
-
-
-    public ArrayList<ArrayList<Character>> getPosibleWins(GameTable gameTable, int x, int y){
-    ArrayList<ArrayList<Character>> result = new ArrayList<>();
-        return result;
+    public boolean isAWinner(ArrayList<ArrayList<Cell>> gameTable, String actualTurn) {
+        return false;
     }
 }
 class typeA extends GameMode {
     public typeA() {
         super('A');
     }
+
     @Override
-    public ArrayList<ArrayList<Character>> getPosibleWins(GameTable gameTable, int x, int y){
-        ArrayList<ArrayList<Character>> result = new ArrayList<>();
-        result.addAll(gameTable.getFullSlots());
-        result.addAll(gameTable.getTransposeMatrix());
-        return result;
+    public boolean isAWinner(ArrayList<ArrayList<Cell>> gameTable, String actualTurn) {
+        return Checker.checkVerticalWin(actualTurn, gameTable) || Checker.checkHorizontalWin(actualTurn, gameTable);
     }
 
 
@@ -46,11 +43,10 @@ class typeB extends GameMode {
     public typeB() {
         super('B');
     }
+
     @Override
-    public ArrayList<ArrayList<Character>> getPosibleWins(GameTable gameTable, int x, int y){
-        ArrayList<ArrayList<Character>> result = new ArrayList<>();
-        result.addAll(gameTable.getDiagonals(x,y));
-        return result;
+    public boolean isAWinner(ArrayList<ArrayList<Cell>> gameTable, String actualTurn) {
+        return Checker.checkDiagonalWin(actualTurn, gameTable);
     }
 }
 
@@ -58,12 +54,9 @@ class typeC extends GameMode {
     public typeC() {
         super('C');
     }
+
     @Override
-    public ArrayList<ArrayList<Character>> getPosibleWins(GameTable gameTable, int x, int y){
-        ArrayList<ArrayList<Character>> result = new ArrayList<>();
-        result.addAll(gameTable.getDiagonals(x,y));
-        result.addAll(gameTable.getTransposeMatrix());
-        result.addAll(gameTable.getFullSlots());
-        return result;
+    public boolean isAWinner(ArrayList<ArrayList<Cell>> gameTable, String actualTurn) {
+        return Checker.checkVerticalWin(actualTurn, gameTable) || Checker.checkHorizontalWin(actualTurn, gameTable) || Checker.checkDiagonalWin(actualTurn, gameTable);
     }
 }
