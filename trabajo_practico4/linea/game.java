@@ -1,22 +1,21 @@
 package linea;
 
 public class Game {
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
 
         System.out.println("Dimensiones?");
 
-        Linea game = new Linea(prompt("Base? "), prompt("Altura? "), 'A');
+        Linea game = new Linea(prompt("Base? "), prompt("Altura? "), 'C');
         System.out.println(game.show());
-        System.out.println(game.gameTable);
 
-        while (!game.finished()) {
-            game.playRedAt(prompt("Rojas? "));
+        while (game.finished()) {
+            game.playAt(prompt("Rojas? "));
             System.out.println(game.show());
 
 
-            if (!game.finished()) {
+            if (game.finished()) {
 
-                game.playBlueAt(prompt("Azules? "));
+                game.playAt(prompt("Azules? "));
 
                 System.out.println(game.show());
 

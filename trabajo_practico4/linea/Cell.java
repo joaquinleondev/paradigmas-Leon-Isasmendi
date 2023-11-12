@@ -1,31 +1,22 @@
 package linea;
 
-public abstract class Cell {
-    private int i;
-    private int j;
-    public Cell (int i, int j) {
-        this.i = i;
-        this.j = j;
-    }
-    public int[] getCoordinates() {
-        return new int[]{this.i, this.j};
-    }
-}
-
-class EmptyCell extends Cell {
-    public EmptyCell(int i, int j) {
-        super(i, j);
-    }
-
+public class Cell {
     @Override
     public String toString() {
         return "-";
     }
 }
 
+class EmptyCell extends Cell {
+    public EmptyCell() {
+        super();
+    }
+
+}
+
 class RedCell extends Cell {
-    public RedCell(int i, int j) {
-        super(i, j);
+    public RedCell() {
+        super();
     }
 
     @Override
@@ -35,8 +26,8 @@ class RedCell extends Cell {
 }
 
 class BlueCell extends Cell {
-    public BlueCell(int i, int j) {
-        super(i, j);
+    public BlueCell() {
+        super();
     }
 
     @Override
