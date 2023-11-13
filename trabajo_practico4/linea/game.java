@@ -8,14 +8,14 @@ public class Game {
         Linea game = new Linea(prompt("Base? "), prompt("Altura? "), 'C');
         System.out.println(game.show());
 
-        while (game.finished()) {
-            game.playAt(prompt("Rojas? "));
+        while (!game.finished()) {
+            game.playRedAt(prompt("Rojas? "));
             System.out.println(game.show());
 
 
-            if (game.finished()) {
+            if (!game.finished()) {
 
-                game.playAt(prompt("Azules? "));
+                game.playBlueAt(prompt("Azules? "));
 
                 System.out.println(game.show());
 

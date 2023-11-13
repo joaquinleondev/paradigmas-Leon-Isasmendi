@@ -27,39 +27,27 @@ public class Linea {
     }
 
     public String show() {
-        StringBuilder result = new StringBuilder();
-        result.append("| ");
-        for (int i = 0; i < this.base; i++) {
-            result.append(i + 1).append(" ");
-        }
-        result.append("|\n");
-
-        for (int i = this.height - 1; i >= 0; i--) {
-            result.append("| ");
-            for (int j = 0; j < this.base; j++) {
-                result.append(this.gameTable.get(j).get(i)).append(" ");
-            }
-            result.append("|\n");
-        }
-
-        return result.toString();
+        return Graphics.show(this.gameTable, this.actualTurn(), this.someoneWon(), this.tied());
     }
 
     public boolean finished() {
-        return !this.tied() && !this.someoneWon();
+        return this.tied() || this.someoneWon();
     }
 
-    public void playAt(int position) {
-        if (Objects.equals(this.turns.get(turns.size() - 1).getValue(), "R")) {
-            playTurn(position, Turns.BLUE);
-        } else {
-            playTurn(position, Turns.RED);
-        }
+    public void playRedAt(int position) {
+        playTurn(position, Turns.RED);
+    }
+    public void playBlueAt(int position) {
+        playTurn(position, Turns.BLUE);
+    }
+    // gameTable() is used in LineaTest.java, it won't be used in the terminal version
+    public ArrayList<ArrayList<Cell>> gameTable(){
+        return this.gameTable;
     }
 
     private void playTurn(int position, Turns player) {
+        IsItPlayerTurn(player);
         checkPosition(position);
-
         for (int i = 0; i < this.height; i++) {
             if (this.gameTable.get(position - 1).get(i) instanceof EmptyCell) {
                 int[] coordsToUpdate = {position - 1, i};
@@ -67,6 +55,12 @@ public class Linea {
                 turns.add(player);
                 return;
             }
+        }
+    }
+
+    private void IsItPlayerTurn(Turns player) {
+        if (actualTurn().equals(player)) {
+            throw new RuntimeException("It's not your turn!");
         }
     }
 
